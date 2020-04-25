@@ -10,8 +10,7 @@ contract ContrattoB {
   constructor(ContrattoA _contrattoa)public{
     owner = msg.sender;
     contrattoa = _contrattoa;
-    // invia l'indirizzo del contratto
-    contrattoa.setAddr(addrB);
+    contrattoa.setAddr(addrB); // invia l'indirizzo del contrattoB al contrattoA
   } 
     
   modifier onlyOwner{
@@ -28,26 +27,23 @@ contract ContrattoB {
 
 //verifica se l'indirizzo dell'utente che sta eseguengo il check-in  è registrato nel contratto A in caso affermativo restituisce gli ether
   function checkIn( uint _idEvent) external payable {   
-    // verifio se l'indirizzo dell'utente è registrato nel contratto A
-    contrattoa.isRegistered(msg.sender,_idEvent);
-       
-    //verifico se il tempo per il checkIn è scaduto
-    uint timeCheckIn= contrattoa.getTimeCheckIn(_idEvent);
+    contrattoa.isRegistered(msg.sender,_idEvent);     // verifio se l'indirizzo dell'utente è registrato nel contratto A
+    uint timeCheckIn= contrattoa.getTimeCheckIn(_idEvent);     
     uint amount =contrattoa.getAmount(_idEvent);
-    require(timeCheckIn >= now);
-    //affermativo invio ether all'utente
-    msg.sender.transfer(amount);
-    contrattoa.setBalance(_idEvent,amount,msg.sender);
+    require(timeCheckIn >= now); //verifico se il tempo per il checkIn è scaduto
+    msg.sender.transfer(amount); //affermativo trasferisce all'utente gli ether precedentemente inviati
+    contrattoa.setBalance(_idEvent,amount,msg.sender); // aggiorna il bilancio dell'evento 
     emit transferAmount(address(this), msg.sender, _idEvent,amount);  
   }
- //  alla scadenza del tempo max trasferisce al proprietario del contratto gli ether non restituiti 
+
+//alla scadenza del tempo max per effettuare il check-in, solo il proprietario può chiamare questa funzione per farsi trasferire il bilancio dell'evento
   function transferBalance(uint _idEvent) external payable onlyOwner{
     uint timeCheckIn= contrattoa.getTimeCheckIn(_idEvent);
     uint balance=contrattoa.getBalance(_idEvent);
     require(timeCheckIn < now);
     owner.transfer(balance);
   }
-  //fallback() external payable{}
+  
   receive () external payable{}  
 }
 

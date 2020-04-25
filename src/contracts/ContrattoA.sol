@@ -34,7 +34,7 @@ contract ContrattoA {
   );
   
  constructor()public{
-    owner=msg.sender; //inizializzo il propritario del contratto
+    owner=msg.sender; //inizializza il propritario del contratto
  }
  
  // imposta l'indirizzo del contatto B
@@ -65,31 +65,36 @@ contract ContrattoA {
     require(!users[msg.sender][_idEvent]._isregistered); //verifica che l'utente non sia registrato
     users[msg.sender][_idEvent]._isregistered=true;
     events[_idEvent].balance += msg.value; // aggiorna il bilancio
-    contrattob.transfer(msg.value);
+    contrattob.transfer(msg.value); // trasferisce gli ether ricevuti al contrattoB
     emit transferToB(msg.sender, contrattob, eventCount, msg.value); // emette l'evento del trasferimento di ether al contratto
   }
   
+  //verifica se l'utente è registrato
   function isRegistered(address sender, uint _idEvent)external view {
     require(users[sender][_idEvent]._isregistered );
   }
    
+  //ritorna il tempo del check-in in secondi dell'evento
   function getTimeCheckIn(uint _idEvent) external view returns(uint){
     return events[_idEvent]._timeSecondCheckIn;
   }
   
+  //ritorna la quantità di ether richiesta per l'evento
   function getAmount(uint _idEvent)external view returns(uint){
     return events[_idEvent]._amount;
   }
-    
+
+  // ritorna il bilancio dell'evento
   function getBalance(uint _idEvent)external view returns(uint){
     return events[_idEvent].balance;
   }
     
+  // imposta il bilancio dell'evento quando l'utente effettua il check-in
   function setBalance(uint _idEvent, uint _amount, address _user)external{
     events[_idEvent].balance -= _amount;
     users[_user][_idEvent]._isregistered=false;
   }
-    
   
+  // con la versione 0.6, è la fallback per semplici trasferimenti di ether  
   receive ()external payable{}
 }
