@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Register from './Register'
 import CreateEvent from './CreateEvent'
 import CheckIn from './CheckIn'
+import TransferBalance from './TransferBalance'
 
 class Main extends Component {
   constructor(props) {
@@ -21,11 +22,16 @@ class Main extends Component {
       content = <CreateEvent
         createEvent={this.props.createEvent}
       />
-    } else {
+    } else if(this.state.currentForm === 'checkIn'){
         content = <CheckIn
         checkIn={this.props.checkIn}
       />
+    } else {
+        content = <TransferBalance
+        transferBalance={this.props.transferBalance}
+      />
     }
+
 
     return (
       <div id="content" className="mt-3">
@@ -56,6 +62,15 @@ class Main extends Component {
               }}
             >
             Check-in
+          </button>
+          <span className="text-muted">&lt; &nbsp; &gt;</span>
+          <button
+              className="btn btn-light"
+              onClick={(event) => {
+                this.setState({ currentForm: 'transferBalance' })
+              }}
+            >
+            Owner
           </button>
         </div>
 

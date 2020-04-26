@@ -17,7 +17,9 @@ class App extends Component {
     const web3 = window.web3
 
     const accounts = await web3.eth.getAccounts()
-    this.setState({ account: accounts[0] })
+    this.setState({ 
+      account: accounts[0]
+    })
 
     // Load ContrattoA
     const networkId =  await web3.eth.net.getId()
@@ -74,6 +76,13 @@ class App extends Component {
         this.setState({ loading: false })
     })
   }
+
+  transferBalance = (Id) => {
+    this.setState({ loading: true })
+      this.state.contrattob.methods.transferBalance(Id).send({ from: this.state.account }).on('transactionHash', (hash) => {
+        this.setState({ loading: false })
+    })
+  }
   constructor(props) {
     super(props)
     this.state = {
@@ -93,6 +102,7 @@ class App extends Component {
         createEvent={this.createEvent}
         register={this.register}
         checkIn={this.checkIn}
+        transferBalance={this.transferBalance}
       />
     }
 
