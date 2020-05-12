@@ -36,7 +36,8 @@ contract ContrattoB {
     emit transferAmount(address(this), msg.sender, _idEvent,amount);  
   }
 
-  //alla scadenza del tempo max per effettuare il check-in, solo il proprietario può chiamare questa funzione trasferire il bilancio dell'evento nel suo wallet
+  /*alla scadenza del tempo max per effettuare il check-in, solo il proprietario 
+  può chiamare questa funzione trasferire il bilancio dell'evento nel suo wallet */
   function transferBalance(uint _idEvent) external payable onlyOwner{
     uint timeCheckIn= contrattoa.getTimeCheckIn(_idEvent);
     uint balance=contrattoa.getBalance(_idEvent);
