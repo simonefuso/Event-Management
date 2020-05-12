@@ -12,7 +12,7 @@ class Navbar extends Component {
           target="_blank"
           rel="noopener noreferrer"
         >
-         Event Management on Blockchain Ethereum powered by Simone Fuso
+         Event Management 
         </a>
 
         <ul className="navbar-nav px-3">

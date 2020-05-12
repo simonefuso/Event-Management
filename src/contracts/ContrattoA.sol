@@ -33,33 +33,34 @@ contract ContrattoA {
     uint _amount
   );
   
- constructor()public{
+  constructor()public{
     owner=msg.sender; //inizializza il propritario del contratto
- }
+  }
  
- // imposta l'indirizzo del contatto B
- function setAddr(address  payable _addrContrattoB) public{
+  // imposta l'indirizzo del contatto B
+  function setAddr(address  payable _addrContrattoB) public{
     contrattob = _addrContrattoB;
   }
  
- // con questo modificatore di funzione solo il proprietario può chiamare una funzione
- modifier onlyOwner(){
-     require(msg.sender== owner);
-     _;
- }
+  // con questo modificatore di funzione solo il proprietario può chiamare una funzione
+  modifier onlyOwner(){
+    require(msg.sender== owner);
+    _;
+  }
 
   // il proprietario del contratto è l'unico che può creare l'evento
- function createEvent(string memory _nameEvent, uint _amount ,uint _timeSecondCheckIn)public onlyOwner {
+  function createEvent(string memory _nameEvent, uint _amount ,uint _timeSecondCheckIn)public onlyOwner {
     eventCount ++;
     events[eventCount]=Event(eventCount, _nameEvent, _amount, now + _timeSecondCheckIn, 0);
   }
+
    
   // verifica che la quantità di ether inviata è corretta 
   function checkAmount(uint _idEvent)internal {
     require(msg.value == events[_idEvent]._amount);
   }
   
-   // verifica che l'indirizzo dell'utente non sia registrato in caso affermativo lo registra e invia gli ether al contratto B
+  // verifica che l'indirizzo dell'utente non sia registrato in caso affermativo lo registra e invia gli ether al contratto B
   function register(uint _idEvent)public payable {
     checkAmount(_idEvent);
     require(!users[msg.sender][_idEvent]._isregistered); //verifica che l'utente non sia registrato

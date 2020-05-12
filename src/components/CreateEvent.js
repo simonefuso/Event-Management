@@ -6,10 +6,11 @@ class CreateEvent extends Component {
     this.state = {
       name:'',
       amount:'',
-      timeCheckIn:''
+      timeCheckIn:'',
+      description:''
     }
   }
- 
+  
   handleChange = (event)=>{
     this.setState({
       [event.target.name]: event.target.value
@@ -35,14 +36,14 @@ class CreateEvent extends Component {
             onChange={this.handleChange}
             ref={(input) => { this.input = input }}
             className="form-control form-control-lg"
-            placeholder="Pippo"
+            placeholder="Nome Evento"
             required />
           <div className="input-group-append">
           </div>
         </div>
         
         <div>
-          <label className="float-left"><b>Quantità</b></label>
+          <label className="float-left"><b>Quantità in Ether</b></label>
         </div>
         <div className="input-group mb-4">
           <input
@@ -74,7 +75,6 @@ class CreateEvent extends Component {
           <div className="input-group-append">
           </div>
         </div>
-
         <button type="submit" className="btn btn-primary btn-block btn-lg">Crea Evento</button>
       </form>
     );

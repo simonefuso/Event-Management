@@ -25,7 +25,7 @@ contract ContrattoB {
     uint _amount
    );
 
-//verifica se l'indirizzo dell'utente che sta eseguengo il check-in  è registrato nel contratto A in caso affermativo restituisce gli ether
+  //verifica se l'indirizzo dell'utente che sta eseguengo il check-in  è registrato nel contratto A in caso affermativo restituisce gli ether
   function checkIn( uint _idEvent) external payable {   
     contrattoa.isRegistered(msg.sender,_idEvent);     // verifio se l'indirizzo dell'utente è registrato nel contratto A
     uint timeCheckIn= contrattoa.getTimeCheckIn(_idEvent);     
@@ -36,7 +36,7 @@ contract ContrattoB {
     emit transferAmount(address(this), msg.sender, _idEvent,amount);  
   }
 
-//alla scadenza del tempo max per effettuare il check-in, solo il proprietario può chiamare questa funzione per farsi trasferire il bilancio dell'evento
+  //alla scadenza del tempo max per effettuare il check-in, solo il proprietario può chiamare questa funzione trasferire il bilancio dell'evento nel suo wallet
   function transferBalance(uint _idEvent) external payable onlyOwner{
     uint timeCheckIn= contrattoa.getTimeCheckIn(_idEvent);
     uint balance=contrattoa.getBalance(_idEvent);

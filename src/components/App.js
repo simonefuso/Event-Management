@@ -15,7 +15,7 @@ class App extends Component {
 
   async loadBlockchainData() {
     const web3 = window.web3
-
+    // Load account
     const accounts = await web3.eth.getAccounts()
     this.setState({ 
       account: accounts[0]
@@ -27,6 +27,15 @@ class App extends Component {
     if(contrattoAData) {
       const contrattoa = new web3.eth.Contract(ContrattoA.abi, contrattoAData.address)
       this.setState({ contrattoa })
+      const eventCount = await contrattoa.methods.eventCount().call()
+      this.setState({ eventCount })
+      // Load Posts
+      for (var i = 1; i <= eventCount; i++) {
+        const event = await contrattoa.methods.events(i).call()
+        this.setState({
+          events: [...this.state.events, event]
+        })
+      }
     } else {
       window.alert('ContrattoA contract not deployed to detected network.')
     }
@@ -83,12 +92,15 @@ class App extends Component {
         this.setState({ loading: false })
     })
   }
+  
   constructor(props) {
     super(props)
     this.state = {
       account: '',
       contrattob: {},
       contrattoa: {},
+      eventCount: 0,
+      events: [],
       loading: true
     }
   }
@@ -103,6 +115,7 @@ class App extends Component {
         register={this.register}
         checkIn={this.checkIn}
         transferBalance={this.transferBalance}
+        events={this.state.events}
       />
     }
 
@@ -111,7 +124,7 @@ class App extends Component {
         <Navbar account={this.state.account} />
         <div className="container-fluid mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
+            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '900px' }}>
               <div className="content mr-auto ml-auto">
                 {content}
 

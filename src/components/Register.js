@@ -1,34 +1,39 @@
 import React, { Component } from 'react'
 
-import parasite from '../Images/media/parasite.jpg'
+import images from '../Images/images.jpg'
 
 class Register extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
+      
+  
 
   render() {
-    return (
-        <form className="mb-3" onSubmit={(event) => {
-            let amount,Id=1
-            amount = window.web3.utils.toWei('2', 'Ether')
-            this.props.register(Id,amount)
-            event.preventDefault()
-          }}>
-          <div >
-            <h5>Parasite 2 ETH</h5>
-            <div className="input-group-append">
-              <div className="input-group-text">
-                <img src={parasite} alt="parasite" />
-              </div>
-            </div>
-          </div>
-          <button type="submit" className="btn btn-primary btn-block btn-lg"
-          style={{ maxWidth: '250px' }} 
-          >Registrati</button>
-        </form>
+    return(
+        <>{ this.props.events.map((event, key) => {
+          let event_id= event._id
+          let amount=event._amount
+          return (
+              <form  >
+                <div Nameclass="col-lg-4 col-md-6 mb-4" >
+                  <div className="card h-100"></div>
+                    <h5>{event._nameEvent} Ether: {window.web3.utils.fromWei(event._amount.toString(), 'Ether')} Id: {event._id}</h5>
+                    <div className="input-group-append">
+                      <div className="input-group-text">
+                        <img src={images} alt="images" />
+                      </div>
+                    </div>
+                  <button 
+                    className="btn btn-primary btn-block btn-lg"
+                    name={event._id}
+                    onClick={(event) =>{
+                      this.props.register(event_id,amount)
+                    }}
+                    style={{ maxWidth: '225px' }} 
+                    >Registrati</button>
+                    <p>&nbsp;</p>
+                  </div>
+                </form>
+          )
+        })}</>
     );
   }
 }

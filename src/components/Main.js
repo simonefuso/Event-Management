@@ -4,11 +4,12 @@ import CreateEvent from './CreateEvent'
 import CheckIn from './CheckIn'
 import TransferBalance from './TransferBalance'
 
+
 class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentForm: 'register'
+      currentForm: 'createEvent'
     }
   }
 
@@ -17,6 +18,7 @@ class Main extends Component {
     if(this.state.currentForm === 'register') {
       content = <Register
         register={this.props.register}
+        events={this.props.events}
       />
     } else if(this.state.currentForm === 'createEvent')  {
       content = <CreateEvent
@@ -25,10 +27,12 @@ class Main extends Component {
     } else if(this.state.currentForm === 'checkIn'){
         content = <CheckIn
         checkIn={this.props.checkIn}
+        events={this.props.events}
       />
     } else {
         content = <TransferBalance
         transferBalance={this.props.transferBalance}
+        events={this.props.events}
       />
     }
 
